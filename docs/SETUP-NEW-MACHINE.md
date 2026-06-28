@@ -68,18 +68,28 @@ Verify it's wired: open Claude Code and look for engram MCP tools (`mem_save`, `
 
 ---
 
-## Step 4: Configure PowerShell profile
+## Step 4: Configure CMD shortcuts (aoi / agent-os-install)
 
-Run the setup script from your agent-os fork — it adds the `agent-os-install` / `aoi` shortcuts:
+Copy the `.bat` files to `%USERPROFILE%\bin` and add that folder to PATH:
 
-```powershell
-& "$env:USERPROFILE\agent-os\scripts\setup-dev-env.ps1"
+```cmd
+mkdir %USERPROFILE%\bin
+copy %USERPROFILE%\agent-os\scripts\aoi.bat %USERPROFILE%\bin\aoi.bat
+copy %USERPROFILE%\agent-os\scripts\agent-os-install.bat %USERPROFILE%\bin\agent-os-install.bat
 ```
 
-Restart the terminal. Verify:
+Add `%USERPROFILE%\bin` to your user PATH (run once in PowerShell or via System Properties):
 ```powershell
-agent-os-install --help   # or just type: aoi
+$p = [Environment]::GetEnvironmentVariable("PATH","User")
+[Environment]::SetEnvironmentVariable("PATH","$p;$env:USERPROFILE\bin","User")
 ```
+
+Open a **new** CMD window and verify:
+```cmd
+aoi
+```
+
+> Note: `aoi` requires Git Bash to be installed (it runs the `.sh` script internally).
 
 ---
 
