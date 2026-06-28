@@ -1,8 +1,22 @@
 version: 3.0
 default_profile: react-nodejs
 
-# Profile inheritance: child profiles get parent standards + their own on top
-# Available profiles: react-nodejs, angular, angular-nestjs
+# Profile inheritance: child gets parent standards first, then adds its own on top.
+#
+# ATOMIC profiles (no parent — install one technology):
+#   react          React 18+ frontend only
+#   angular        Angular 17+ frontend only
+#   nodejs         Node.js backend only
+#   nestjs         NestJS backend (inherits nodejs)
+#   vanilla-js     Vanilla JS, no framework
+#   html-css       HTML5 + CSS3 only
+#
+# COMPOSED profiles (combine two stacks):
+#   react-nodejs       React frontend + Node.js/Express backend
+#   angular-nestjs     Angular frontend + NestJS backend (inherits angular)
+
 profiles:
+  nestjs:
+    inherits_from: nodejs
   angular-nestjs:
     inherits_from: angular
