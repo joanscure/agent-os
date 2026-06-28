@@ -1,21 +1,21 @@
 # Setup: New Machine
 
-Everything needed to replicate this AI-assisted dev environment from scratch.
+Everything needed to replicate this AI-assisted dev environment from scratch on Windows.
+Primary shell: **CMD** (Command Prompt). Git Bash is required internally but you don't type in it.
 
 ---
 
-## Prerequisites
+## Prerequisites — install in this order
 
-Install these first (in order):
+| Tool | Why | How |
+|---|---|---|
+| **Git** | Cloning repos + Git Bash (runs agent-os scripts internally) | https://git-scm.com/download/win |
+| **Node.js LTS** | Frontend/backend projects | `winget install OpenJS.NodeJS.LTS` |
+| **Go** | Needed to build engram | `winget install GoLang.Go` |
+| **Claude Code** | AI coding CLI | https://claude.ai/code |
 
-### 1. Core tools
-- **Git** — https://git-scm.com/download/win (includes Git Bash, needed for agent-os scripts)
-- **Node.js LTS** — https://nodejs.org (or via `winget install OpenJS.NodeJS.LTS`)
-- **Go** — `winget install GoLang.Go` (needed for engram)
-- **Claude Code** — https://claude.ai/code (the AI coding CLI)
-
-### 2. Verify installs
-```powershell
+Verify in CMD after installing:
+```cmd
 git --version
 node --version
 go version
@@ -24,53 +24,51 @@ claude --version
 
 ---
 
-## Step 1: Clone agent-os (your fork)
+## Step 1: Clone your agent-os fork
 
-```powershell
-git clone https://github.com/joanscure/agent-os.git "$env:USERPROFILE\agent-os"
+```cmd
+git clone https://github.com/joanscure/agent-os.git %USERPROFILE%\agent-os
 ```
 
-This is your personal fork with custom profiles for React/Node, Angular, and Angular+NestJS.
+This installs your personal fork with profiles for React/Node, Angular, and Angular+NestJS.
 
 ---
 
 ## Step 2: Install engram
 
-```powershell
+```cmd
 go install github.com/Gentleman-Programming/engram/cmd/engram@latest
 ```
 
-The binary installs to `~/go/bin/engram.exe`.
+The binary installs to `%USERPROFILE%\go\bin\engram.exe`.
 
-**Add Go binaries to PATH** (if not already):
-```powershell
-# Run once — adds permanently to user PATH
-$gobin = "$env:USERPROFILE\go\bin"
-$current = [Environment]::GetEnvironmentVariable("PATH", "User")
-if ($current -notlike "*$gobin*") {
-    [Environment]::SetEnvironmentVariable("PATH", "$current;$gobin", "User")
-}
+Add Go binaries to PATH permanently (run once in CMD):
+```cmd
+setx PATH "%PATH%;%USERPROFILE%\go\bin"
 ```
 
-Restart terminal, then verify: `engram --version`
+Open a **new** CMD window, then verify:
+```cmd
+engram --version
+```
 
 ---
 
 ## Step 3: Connect engram to Claude Code
 
-```powershell
+```cmd
 engram setup claude-code
 ```
 
-This writes the MCP config to Claude Code's settings so engram starts automatically with every Claude Code session. No manual server startup needed.
+When it asks about the allowlist, type `y` and press Enter.
 
-Verify it's wired: open Claude Code and look for engram MCP tools (`mem_save`, `mem_search`, etc.).
+This wires engram as an MCP server — Claude Code calls it automatically every session, no manual startup needed.
 
 ---
 
-## Step 4: Configure CMD shortcuts (aoi / agent-os-install)
+## Step 4: Set up the `aoi` command
 
-Copy the `.bat` files to `%USERPROFILE%\bin` and add that folder to PATH:
+Copy the `.bat` files from your fork to `%USERPROFILE%\bin`:
 
 ```cmd
 mkdir %USERPROFILE%\bin
@@ -78,10 +76,9 @@ copy %USERPROFILE%\agent-os\scripts\aoi.bat %USERPROFILE%\bin\aoi.bat
 copy %USERPROFILE%\agent-os\scripts\agent-os-install.bat %USERPROFILE%\bin\agent-os-install.bat
 ```
 
-Add `%USERPROFILE%\bin` to your user PATH (run once in PowerShell or via System Properties):
-```powershell
-$p = [Environment]::GetEnvironmentVariable("PATH","User")
-[Environment]::SetEnvironmentVariable("PATH","$p;$env:USERPROFILE\bin","User")
+Add `%USERPROFILE%\bin` to PATH permanently:
+```cmd
+setx PATH "%PATH%;%USERPROFILE%\bin"
 ```
 
 Open a **new** CMD window and verify:
@@ -89,33 +86,39 @@ Open a **new** CMD window and verify:
 aoi
 ```
 
-> Note: `aoi` requires Git Bash to be installed (it runs the `.sh` script internally).
+You should see the agent-os install script run (it will say "not in base installation directory" if you're not inside a project — that's normal).
 
 ---
 
 ## Step 5: Verify everything
 
-```powershell
-# agent-os profiles available
-ls "$env:USERPROFILE\agent-os\profiles"
-# → angular, angular-nestjs, react-nodejs, default
+Open a new CMD window and run:
 
-# engram working
+```cmd
+rem Check agent-os profiles
+dir %USERPROFILE%\agent-os\profiles
+
+rem Check engram
+engram --version
 engram stats
 
-# Go binaries in PATH
-engram --version
+rem Check aoi shortcut
+aoi
 ```
 
 ---
 
 ## What you now have
 
-| Tool | Purpose |
-|---|---|
-| `agent-os` | Per-project coding standards + AI planning commands |
-| `engram` | Persistent memory across Claude Code sessions |
-| `aoi <profile>` | One-command project initialization |
-| Claude Code | AI coding assistant (connects to both tools automatically) |
+| Tool | Command | Purpose |
+|---|---|---|
+| agent-os | `aoi <profile>` | Per-project coding standards + AI planning commands |
+| engram | automatic | Persistent memory across Claude Code sessions |
+| Claude Code | `claude` | AI coding assistant |
+
+**Profiles available:**
+- `aoi react-nodejs` — React 18 + Node.js
+- `aoi angular` — Angular 17+ standalone
+- `aoi angular-nestjs` — Angular frontend + NestJS backend
 
 **Next:** See `PROJECT-WORKFLOW.md` to initialize your first project.
