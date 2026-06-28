@@ -29,6 +29,34 @@ Read the [changelog](CHANGELOG.md)
 
 ---
 
+## My Setup (fork by joanscure)
+
+This is a personal fork with custom profiles and documentation for a Windows + Claude Code workflow.
+
+### Profiles available
+
+| Profile | Stack |
+|---|---|
+| `react-nodejs` | React 18 + Node.js (default) |
+| `angular` | Angular 17+ standalone |
+| `angular-nestjs` | Angular + NestJS backend (inherits angular) |
+
+### Quick commands (after setup)
+
+```powershell
+aoi react-nodejs      # initialize project with React/Node standards
+aoi angular           # initialize project with Angular standards
+aoi angular-nestjs    # initialize project with Angular + NestJS standards
+```
+
+### Documentation
+
+- [Setup: New Machine](docs/SETUP-NEW-MACHINE.md) — install everything from scratch
+- [Project Workflow](docs/PROJECT-WORKFLOW.md) — initialize and work on a project
+- [AI Workflow Overview](docs/AI-WORKFLOW-OVERVIEW.md) — full methodology explanation
+
+---
+
 ### Created by Brian Casel @ Builder Methods
 
 Created by Brian Casel, the creator of [Builder Methods](https://buildermethods.com), where Brian helps professional software developers and teams build with AI.
