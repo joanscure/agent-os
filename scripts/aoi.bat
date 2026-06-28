@@ -3,8 +3,10 @@
 :: Usage: aoi [profile]
 :: Profiles: react-nodejs (default), angular, angular-nestjs
 
+set BASH="C:\Program Files\Git\bin\bash.exe"
+
 if "%~1"=="" (
-    bash "%USERPROFILE%/agent-os/scripts/project-install.sh"
+    %BASH% "%USERPROFILE%/agent-os/scripts/project-install.sh"
 ) else (
-    bash "%USERPROFILE%/agent-os/scripts/project-install.sh" --profile %1
+    %BASH% "%USERPROFILE%/agent-os/scripts/project-install.sh" --profile %1
 )
